@@ -1,5 +1,6 @@
 package com.example.bookstore_android.presentation.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -19,7 +20,8 @@ import com.example.bookstore_android.presentation.viewmodel.LoginViewModelFactor
 
 /**
  * Patrón MVVM - View (Capa de Presentación):
- * Observa el estado expuesto por LoginViewModel y actualiza los componentes visuales.
+ * Observa el estado expuesto por LoginViewModel y tras el inicio de sesión exitoso
+ * conecta directamente con el Dashboard (Panel Principal).
  */
 class LoginActivity : AppCompatActivity() {
 
@@ -38,15 +40,15 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var btnLogin: Button
     private lateinit var pbLoading: ProgressBar
 
-    private lateinit var cardLoginForm: View
-    private lateinit var cardLoggedIn: View
-    private lateinit var tvLoggedInName: TextView
-    private lateinit var tvLoggedInEmail: TextView
-    private lateinit var tvLoggedInRole: TextView
-    private lateinit var btnLogout: Button
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Si ya hay sesión activa previa, navegar directo al Dashboard
+        if (viewModel.currentState is LoginUiState.Success) {
+            navigateToDashboard()
+            return
+        }
+
         setContentView(R.layout.activity_main)
 
         initViews()
@@ -61,13 +63,6 @@ class LoginActivity : AppCompatActivity() {
         tvErrorMessage = findViewById(R.id.tvErrorMessage)
         btnLogin = findViewById(R.id.btnLogin)
         pbLoading = findViewById(R.id.pbLoading)
-
-        cardLoginForm = findViewById(R.id.cardLoginForm)
-        cardLoggedIn = findViewById(R.id.cardLoggedIn)
-        tvLoggedInName = findViewById(R.id.tvLoggedInName)
-        tvLoggedInEmail = findViewById(R.id.tvLoggedInEmail)
-        tvLoggedInRole = findViewById(R.id.tvLoggedInRole)
-        btnLogout = findViewById(R.id.btnLogout)
     }
 
     private fun setupListeners() {
@@ -76,10 +71,6 @@ class LoginActivity : AppCompatActivity() {
             val password = etPassword.text.toString().trim()
             viewModel.login(email, password)
         }
-
-        btnLogout.setOnClickListener {
-            viewModel.logout()
-        }
     }
 
     private fun observeViewModel() {
@@ -87,20 +78,17 @@ class LoginActivity : AppCompatActivity() {
             when (state) {
                 is LoginUiState.Initial -> renderInitialState()
                 is LoginUiState.Loading -> renderLoadingState()
-                is LoginUiState.Success -> renderSuccessState(state)
+                is LoginUiState.Success -> navigateToDashboard()
                 is LoginUiState.Error -> renderErrorState(state)
             }
         }
     }
 
     private fun renderInitialState() {
-        cardLoginForm.visibility = View.VISIBLE
-        cardLoggedIn.visibility = View.GONE
         layoutError.visibility = View.GONE
         btnLogin.isEnabled = true
         btnLogin.text = "Iniciar sesión"
         pbLoading.visibility = View.GONE
-        etPassword.text?.clear()
     }
 
     private fun renderLoadingState() {
@@ -110,22 +98,13 @@ class LoginActivity : AppCompatActivity() {
         pbLoading.visibility = View.VISIBLE
     }
 
-    private fun renderSuccessState(state: LoginUiState.Success) {
-        cardLoginForm.visibility = View.GONE
-        cardLoggedIn.visibility = View.VISIBLE
-        layoutError.visibility = View.GONE
-        btnLogin.isEnabled = true
-        btnLogin.text = "Iniciar sesión"
-        pbLoading.visibility = View.GONE
-
-        tvLoggedInName.text = "Nombre: ${state.user.name}"
-        tvLoggedInEmail.text = "Correo: ${state.user.email}"
-        tvLoggedInRole.text = "ROL: ${state.user.role}"
+    private fun navigateToDashboard() {
+        val intent = Intent(this, DashboardActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun renderErrorState(state: LoginUiState.Error) {
-        cardLoginForm.visibility = View.VISIBLE
-        cardLoggedIn.visibility = View.GONE
         btnLogin.isEnabled = true
         btnLogin.text = "Iniciar sesión"
         pbLoading.visibility = View.GONE
