@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/slate_100"
     android:orientation="vertical">
 
+    <!-- Top Toolbar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarReports"
         android:layout_width="match_parent"
@@ -13,7 +15,7 @@
         android:background="@color/slate_900"
         app:navigationIcon="?attr/homeAsUpIndicator"
         app:navigationIconTint="@color/white"
-        app:subtitle="Historial y métricas de transacciones"
+        app:subtitle="Ventas diarias, mensuales y anuales"
         app:subtitleTextColor="@color/slate_400"
         app:title="Reportes"
         app:titleTextColor="@color/white" />
@@ -29,10 +31,11 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Summary Header Card -->
+            <!-- Encabezado de Sección (SectionHeader) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_card_white"
                 android:orientation="vertical"
                 android:padding="20dp">
@@ -40,49 +43,247 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Resumen General"
+                    android:letterSpacing="0.15"
+                    android:text="CENTRO DE REPORTES"
                     android:textColor="@color/slate_500"
-                    android:textSize="12sp"
+                    android:textSize="11sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvTotalRevenue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Reportes de Ventas"
+                    android:textColor="@color/slate_900"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="$ 0"
+                    android:text="Consolidado de transacciones con filtros por período, cliente y libro."
+                    android:textColor="@color/slate_600"
+                    android:textSize="13sp" />
+
+                <!-- Pestañas de Período (Diario, Mensual, Anual) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnPeriodDaily"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/slate_900"
+                        android:text="Diario"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        app:cornerRadius="12dp" />
+
+                    <Button
+                        android:id="@+id/btnPeriodMonthly"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/slate_100"
+                        android:text="Mensual"
+                        android:textColor="@color/slate_700"
+                        android:textSize="13sp"
+                        app:cornerRadius="12dp" />
+
+                    <Button
+                        android:id="@+id/btnPeriodYearly"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/slate_100"
+                        android:text="Anual"
+                        android:textColor="@color/slate_700"
+                        android:textSize="13sp"
+                        app:cornerRadius="12dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Card de Filtros (Fecha, Cliente y Libro) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_card_white"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Filtros de Búsqueda"
                     android:textColor="@color/slate_900"
-                    android:textSize="26sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
+
+                <!-- Filtro de Fecha -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Fecha"
+                    android:textColor="@color/slate_600"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/etFilterDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/selector_input_field"
+                    android:clickable="true"
+                    android:cursorVisible="false"
+                    android:drawableEnd="@drawable/ic_calendar"
+                    android:drawablePadding="8dp"
+                    android:focusable="false"
+                    android:hint="YYYY-MM-DD"
+                    android:inputType="none"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="@color/slate_900"
+                    android:textSize="14sp" />
+
+                <!-- Filtro de Cliente -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Cliente"
+                    android:textColor="@color/slate_600"
+                    android:textSize="12sp" />
+
+                <Spinner
+                    android:id="@+id/spClientFilter"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/selector_input_field"
+                    android:paddingHorizontal="10dp" />
+
+                <!-- Filtro de Libro -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Libro"
+                    android:textColor="@color/slate_600"
+                    android:textSize="12sp" />
+
+                <Spinner
+                    android:id="@+id/spBookFilter"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/selector_input_field"
+                    android:paddingHorizontal="10dp" />
+
+                <Button
+                    android:id="@+id/btnClearFilters"
+                    style="?attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
+                    android:text="Limpiar filtros"
+                    android:textColor="@color/slate_500"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Card de Resumen Consolidado -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_card_white"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Total General:"
+                        android:textColor="@color/slate_600"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvTotalRevenue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$ 0"
+                        android:textColor="@color/emerald_700"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvSalesCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="0 ventas registradas"
-                    android:textColor="@color/slate_600"
-                    android:textSize="14sp" />
+                    android:text="0 ventas en el período"
+                    android:textColor="@color/slate_500"
+                    android:textSize="13sp" />
+
+                <!-- Desglose por períodos -->
+                <LinearLayout
+                    android:id="@+id/layoutSummaryItems"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical" />
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="8dp"
-                android:text="Transacciones Registradas"
-                android:textColor="@color/slate_900"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
+            <!-- Loading & Error -->
             <ProgressBar
                 android:id="@+id/pbReportsLoading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginVertical="24dp" />
+                android:layout_marginVertical="16dp"
+                android:visibility="gone" />
 
-            <!-- Container for sales list cards -->
+            <TextView
+                android:id="@+id/tvReportsError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_error_box"
+                android:padding="12dp"
+                android:textColor="@color/rose_700"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+            <!-- Título de Lista -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Detalle de Transacciones"
+                android:textColor="@color/slate_900"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- Contenedor dinámico de ventas -->
             <LinearLayout
                 android:id="@+id/layoutSalesList"
                 android:layout_width="match_parent"

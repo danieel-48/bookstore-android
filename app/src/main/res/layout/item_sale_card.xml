@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="12dp"
     android:background="@drawable/bg_card_white"
-    android:elevation="1dp"
+    android:elevation="2dp"
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Fila Superior: Número de comprobante y Total -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Venta #1"
+            android:text="20261107-1"
             android:textColor="@color/slate_900"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -30,16 +31,40 @@
             android:layout_height="wrap_content"
             android:text="$ 0"
             android:textColor="@color/emerald_700"
-            android:textSize="16sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
     </LinearLayout>
 
+    <!-- Cliente -->
+    <TextView
+        android:id="@+id/tvSaleClient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="Cliente: Stiven Valeriano"
+        android:textColor="@color/slate_700"
+        android:textSize="13sp" />
+
+    <!-- Fecha -->
     <TextView
         android:id="@+id/tvSaleDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="2026-11-07 02:03"
+        android:layout_marginTop="2dp"
+        android:text="7 nov 2026, 01:47"
         android:textColor="@color/slate_500"
+        android:textSize="12sp" />
+
+    <!-- Botón Ver Detalle -->
+    <Button
+        android:id="@+id/btnViewDetails"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/slate_50"
+        android:text="Ver Detalle de la Venta"
+        android:textAllCaps="false"
+        android:textColor="@color/slate_800"
         android:textSize="13sp" />
 </LinearLayout>
